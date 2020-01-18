@@ -1,23 +1,18 @@
 <template>
   <div id="app">
-      <header>
-          <h3>
-              Stack Overflow Data Scraper
-          </h3>
-      </header>
+      <MainHeader
+        :isRefreshing="isRefreshing"
+        :filterType="filterTypes[filterType]"
+        :filterDateRange="filterDateRange"
+        @refresh="fetchData"
+        @changeFilterType="handleFilterTypeChange"
+        @changeFilterDateRange="handleFilterDateRangeChange" />
       <main>
           <section>
-            <h2>Newest Questions</h2>
+            <h2>{{ filterTypes[filterType] }} Questions</h2>
             <SummaryTable
-                title="newest"
+                :title="filterType"
                 :rows="newestQuestions" />
-          </section>
-
-          <section>
-            <h2>Most Voted Questions</h2>
-            <SummaryTable
-                title="most-voted"
-                :rows="mostVotedQuestions" />
           </section>
       </main>
   </div>
@@ -26,27 +21,53 @@
 <script>
 import scraper from '@/services/scraper';
 import SummaryTable from '@/components/SummaryTable.vue';
+import MainHeader from '@/components/MainHeader.vue';
 
 
 export default {
     name: 'app',
     components: {
         SummaryTable,
+        MainHeader,
     },
     data() {
         return {
             newestQuestions: [],
             mostVotedQuestions: [],
+            isRefreshing: false,
+            filterTypes: {
+                newest: 'Newest',
+                votes: 'Most Votes',
+                relevance: 'Relevance',
+                active: 'Active',
+            },
+            filterType: 'newest',
+            filterDateRange: 7,
         };
     },
     methods: {
         fetchData() {
-            scraper.scrapeNewestAndroidQuestions().then(objects => {
+            this.isRefreshing = true;
+            scraper.scrapeStackOverflowSummaryQuestions(this.filterType, 'android', this.filterDateRange).then(objects => {
                 this.newestQuestions = objects;
+                this.isRefreshing = false;
+            }).catch(err => {
+                this.isRefreshing = false;
             });
-            scraper.scrapeMostVotedAndroidQuestions().then(objects => {
-                this.mostVotedQuestions = objects;
-            });
+        },
+        handleRefreshEvent() {
+            if (this.isRefreshing) {
+                return;
+            }
+            this.fetchData();
+        },
+        handleFilterTypeChange(newFilterType) {
+            this.filterType = newFilterType;
+            this.fetchData();
+        },
+        handleFilterDateRangeChange(newDateRange) {
+            this.filterDateRange = newDateRange;
+            this.fetchData();
         },
     },
     mounted() {
@@ -65,17 +86,8 @@ export default {
   display: flex;
   flex-direction: column;
 
-  header {
-      height: 40px;
-      display: flex;
-      align-items: center;
-      padding: 8px 16px;
-      background-color: #283243;
-      color: white;
-  }
-
   main {
-      margin: 0 8px;
+      margin: 80px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
