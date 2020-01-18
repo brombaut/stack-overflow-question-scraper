@@ -8,7 +8,10 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.19.1",
+    "cheerio": "^1.0.0-rc.3",
     "core-js": "^2.6.5",
+    "puppeteer": "^2.0.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
@@ -32,7 +35,28 @@
       "plugin:vue/essential",
       "@vue/airbnb"
     ],
-    "rules": {},
+    "rules": {
+        "import/no-unresolved": 0,
+        "import/extensions": 0,
+        "no-shadow": 0,
+        "no-param-reassign": 0,
+        "arrow-parens": 0,
+        "arrow-body-style": 0,
+        "no-console": 0,
+        "no-unused-vars": 0,
+        "func-names": 0,
+        "prefer-arrow-callback": 0,
+        "space-before-function-paren": 0,
+        "no-use-before-define": 0,
+        "max-len": [
+            "error",
+            160
+        ],
+        "indent": [
+            "error",
+            4
+        ]
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     }
