@@ -26,6 +26,7 @@
         <QuestionDetailsModal
             :show="showModal"
             :questionSummaryDetails="selectedQuestionSummaryDetails"
+            :questionBodyDetails="selectedQuestionBodyDetails"
             @modalClosed="resetSelectedQuestion" />
   </div>
 </template>
@@ -73,6 +74,12 @@ export default {
             }
             return this.questionSummaries.find(q => q.id === this.selectedQuestionId);
         },
+        selectedQuestionBodyDetails() {
+            if (!this.selectedQuestionId) {
+                return {};
+            }
+            return this.specificQuestionDetails[this.selectedQuestionId];
+        },
     },
     methods: {
         fetchData() {
@@ -109,31 +116,22 @@ export default {
             if (!selectedQuestion.detailsFetched) {
                 const selectedQuestionSummary = this.selectedQuestionSummaryDetails;
                 if (selectedQuestionSummary) {
-                    scraper.scrapeStackOverflowQuestionDetails(selectedQuestionSummary.absoluteHyperlink).then(this.addQuestionDetails);
+                    scraper.scrapeStackOverflowQuestionDetails(selectedQuestionSummary.absoluteHyperlink).then(details => {
+                        this.addQuestionDetails(details);
+                    });
                 }
             }
+            document.body.style.overflow = 'hidden';
             this.showModal = true;
         },
         addQuestionDetails(details) {
-            this.$set(this.specificQuestionDetails, `${this.selectedQuestionId}`, details);
-            // this.specificQuestionDetails[`${this.selectedQuestionId}`] = details;
-            // this.$nextTick().then(() => {
-            //     const selectedQuestion = this.questionSummaries.find(q => q.id === this.selectedQuestionId);
-            //     selectedQuestion.detailsFetched = true;
-            //     selectedQuestion.fullTitle = details.fullTitle;
-            // });
+            const cleanedObj = { ...details };
+            this.$set(this.specificQuestionDetails, `${this.selectedQuestionId}`, cleanedObj);
         },
         resetSelectedQuestion() {
             this.selectedQuestionId = null;
+            document.body.style.overflow = 'auto';
             this.showModal = false;
-        },
-    },
-    watch: {
-        specificQuestionDetails: {
-            handler(newVal) {
-                console.log('WATCHER', newVal);
-            },
-            deep: true,
         },
     },
     mounted() {
@@ -144,19 +142,43 @@ export default {
 
 <style lang="scss">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  display: flex;
-  flex-direction: column;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    display: flex;
+    flex-direction: column;
 
-  main {
-      margin: 80px 8px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-  }
+    main {
+        margin: 80px 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .lds-dual-ring {
+        display: inline-block;
+    }
+
+    .lds-dual-ring:after {
+        content: " ";
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin: 8px;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        border-color: #fff transparent #fff transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+    }
+    @keyframes lds-dual-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 }
 </style>

@@ -50,9 +50,14 @@ function scrapeGenericQuestionDetailsFromQuestionHtml(html) {
     const $ = buildHtmlTree(html);
     const headerEl = $('#question-header');
     const fullTitle = $(headerEl).find('.question-hyperlink').text();
-    console.log(fullTitle);
+    const questionEl = $('.question');
+    const postTextEl = $(questionEl).find('.post-text');
+    const questionBodyRawText = $(postTextEl).text();
+    const questionBodyRawHtml = $(postTextEl).html();
     return {
         fullTitle,
+        questionBodyRawText,
+        questionBodyRawHtml,
     };
 }
 
@@ -69,10 +74,10 @@ export default {
         const filterQuery = buildFilterQuery(tab, tag, daysRange, pageSize);
         const url = `${corsPrefix}${baseUrl}${filterQuery}`;
         // TODO: Remove this
-        if (true) {
-            const promise = new Promise((resolve, reject) => resolve(JSON.parse(testData)));
-            return promise.then(data => data);
-        }
+        // if (true) {
+        //     const promise = new Promise((resolve, reject) => resolve(JSON.parse(testData)));
+        //     return promise.then(data => data);
+        // }
         return axios.get(url).then(response => {
             if (response.status === 200) {
                 const questionSummaries = scrapeGenericQuestionSummaryFromQueryHtml(response.data);

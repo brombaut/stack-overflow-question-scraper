@@ -5,7 +5,8 @@
         :class="{modal: true, 'modal-show': isVisible, 'modal-hide': !isVisible}">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4>{{ questionSummaryDetails.title }}</h4>
+                    <h4 v-if="detailsAreLoaded">{{ questionBodyDetails.fullTitle }}</h4>
+                    <h4 v-else>{{ questionSummaryDetails.title }}</h4>
                     <div class='expand'></div>
                     <div class="actions-container">
                         <div class="so-link-container action">
@@ -21,12 +22,8 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div v-if="detailsAreLoaded">
-                        <p>Body</p>
-                    </div>
-                    <div v-else>
-                        <p>NO BODY</p>
-                    </div>
+                    <div v-show="detailsAreLoaded" id="question-body-container"></div>
+                    <div v-show="!detailsAreLoaded" class="lds-dual-ring"></div>
                 </div>
                 <div class="modal-footer">
                     <div class='stat-container'>
@@ -96,9 +93,13 @@ export default {
         show(newVal) {
             this.isVisible = newVal;
         },
-        questionBodyDetails(newVal) {
-            console.log('new questionBodyDetails');
-            console.log(newVal);
+        detailsAreLoaded(newVal) {
+            const bodyContainerEl = document.querySelector('#question-body-container');
+            if (newVal) {
+                bodyContainerEl.innerHTML = this.questionBodyDetails.questionBodyRawHtml;
+            } else {
+                bodyContainerEl.innerHTML = '';
+            }
         },
     },
     mounted() {
@@ -115,22 +116,20 @@ export default {
 </script>
 
 <style lang='scss'>
-/* The Modal (background) */
 .modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1; /* Sit on top */
-    padding-top: 200px; /* Location of the box */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 1;
     left: 0;
     top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
 }
 
-/* Modal Content */
 .modal-content {
     position: relative;
     background-color: #fefefe;
@@ -145,7 +144,6 @@ export default {
     animation-duration: 0.4s
 }
 
-/* Add Animation */
 @-webkit-keyframes animatetop {
     from {
         top:-300px; opacity:0
@@ -164,10 +162,8 @@ export default {
     }
 }
 
-/* The Close Button */
 .close {
     color: white;
-    // float: right;
     font-size: 28px;
     font-weight: bold;
 }
@@ -185,6 +181,11 @@ export default {
     color: white;
     display: flex;
     align-items: center;
+
+    h4 {
+        text-align: left;
+        margin-right: 8px;
+    }
 
     .expand {
         flex: 1;
@@ -221,6 +222,13 @@ export default {
 
 .modal-body {
     padding: 2px 16px;
+    margin: 12px 0;
+    max-height: 600px;
+    overflow-y: auto;
+
+    #question-body-container {
+        text-align: left;
+    }
 }
 
 .modal-footer {
@@ -250,7 +258,7 @@ export default {
 }
 
 .modal-show {
-    display: block;
+    display: flex;
 }
 
 .modal-hide {

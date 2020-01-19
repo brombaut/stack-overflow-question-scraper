@@ -240,13 +240,11 @@ header {
             transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
         }
 
-        /* The container <div> - needed to position the dropdown content */
         .dropdown {
             position: relative;
             display: inline-block;
         }
 
-        /* Dropdown Content (Hidden by Default) */
         .dropdown-content {
             display: none;
             position: absolute;
@@ -256,7 +254,6 @@ header {
             z-index: 1;
         }
 
-        /* Links inside the dropdown */
         .dropdown-content span {
             color: black;
             padding: 12px 16px;
@@ -265,18 +262,15 @@ header {
             text-align: left;
         }
 
-        /* Change color of dropdown links on hover */
         .dropdown-content span:hover {
             background-color: #f1f1f1;
             cursor: pointer;
         }
 
-        /* Show the dropdown menu on hover */
         .dropdown:hover .dropdown-content {
             display: block;
         }
 
-        /* Change the background color of the dropdown button when the dropdown content is shown */
         .dropdown:hover .dropbtn {
             cursor: pointer;
             background-color: #323e4f;
@@ -303,30 +297,6 @@ header {
 
         .border-left {
             border-left: 1px solid white;
-        }
-    }
-
-    .lds-dual-ring {
-        display: inline-block;
-    }
-
-    .lds-dual-ring:after {
-        content: " ";
-        display: block;
-        width: 20px;
-        height: 20px;
-        margin: 8px;
-        border-radius: 50%;
-        border: 3px solid #fff;
-        border-color: #fff transparent #fff transparent;
-        animation: lds-dual-ring 1.2s linear infinite;
-    }
-    @keyframes lds-dual-ring {
-        0% {
-            transform: rotate(0deg);
-        }
-        100% {
-            transform: rotate(360deg);
         }
     }
 }
