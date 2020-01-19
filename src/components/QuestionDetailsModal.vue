@@ -229,6 +229,30 @@ export default {
     #question-body-container {
         text-align: left;
     }
+
+    .lds-dual-ring {
+        display: inline-block;
+    }
+
+    .lds-dual-ring:after {
+        content: " ";
+        display: block;
+        width: 80px;
+        height: 80px;
+        margin: 8px;
+        border-radius: 50%;
+        border: 8px solid #323e4f;
+        border-color: #323e4f transparent #323e4f transparent;
+        animation: lds-dual-ring 1.2s linear infinite;
+    }
+    @keyframes lds-dual-ring {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 }
 
 .modal-footer {
