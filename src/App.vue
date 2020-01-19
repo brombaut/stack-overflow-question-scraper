@@ -16,7 +16,9 @@
             <SummaryTable
                 v-if="newestQuestions.length > 0"
                 :title="filterType"
-                :rows="newestQuestions" />
+                :rows="newestQuestions"
+                :filterTag="filterTag"
+                @tagClicked="handleRefreshEvent"/>
             <h3 v-else>No Data Found</h3>
           </section>
       </main>
