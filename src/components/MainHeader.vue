@@ -4,7 +4,7 @@
         <div class="expand"></div>
         <div class="actions-container">
             <div class="dropdown">
-                <button class="dropbtn">Filter By {{ filterType }}</button>
+                <button class="dropbtn border-left">Filter By: {{ filterType }}</button>
                 <div class="dropdown-content">
                     <span
                         @click='handleFilterTypeDropdownSelection'
@@ -33,7 +33,7 @@
                 </div>
             </div>
             <div class="dropdown">
-                <button class="dropbtn">{{ filterDateSelectorString }}</button>
+                <button class="dropbtn border-left">{{ filterDateSelectorString }}</button>
                 <div class="dropdown-content">
                     <span
                         @click='handleFilterDateRangeDropdownSelection'
@@ -57,8 +57,15 @@
                     </span>
                 </div>
             </div>
+            <div id='tag-filter-container' class="action">
+                <input id='filter-tag-input' type='text' placeholder="Enter a tag..." :value="filterTag"/>
+                <div class="tag-error-content">
+                    <p class="tag-error-message"><b>Invlid Tag. </b>Only alphanumeric characters and '.', '#', '+' and '-' characters are allowed.</p>
+                </div>
+            </div>
             <button
                 id="refresh"
+                class="border-left"
                 @click='handleRefreshClick'>
                 <div
                     class="lds-dual-ring"
@@ -76,6 +83,7 @@ export default {
         isRefreshing: Boolean,
         filterType: String,
         filterDateRange: Number,
+        filterTag: String,
     },
     computed: {
         filterDateSelectorString() {
@@ -84,7 +92,14 @@ export default {
     },
     methods: {
         handleRefreshClick() {
-            this.$emit('refresh');
+            const tagInputEl = document.querySelector('#filter-tag-input');
+            const tag = tagInputEl.value.toLowerCase();
+            if (!this.validateTag(tag)) {
+                document.querySelector('#tag-filter-container').classList.add('tag-error');
+                return;
+            }
+            document.querySelector('#tag-filter-container').classList.remove('tag-error');
+            this.$emit('refresh', tag);
         },
         handleFilterTypeDropdownSelection(evt) {
             const newFilterType = evt.target.dataset.filterTypeString;
@@ -93,6 +108,14 @@ export default {
         handleFilterDateRangeDropdownSelection(evt) {
             const newFilterDateRange = Number(evt.target.dataset.filterDateRange);
             this.$emit('changeFilterDateRange', newFilterDateRange);
+        },
+        validateTag(tag) {
+            if (tag.length === 0) {
+                // Empty string is fine
+                return true;
+            }
+            const isValid = tag.match(/^[0-9a-z+\-.#]+$/);
+            return isValid;
         },
     },
 };
@@ -122,6 +145,55 @@ header {
     .actions-container {
         height: 100%;
         display: flex;
+
+        .action {
+            display: flex;
+            align-items: center;
+            border-left: 1px solid white;
+            position: relative;
+
+            input {
+                font-size: 1rem;
+                height: 50%;
+                margin: 0 4px;
+                width: 200px;
+            }
+
+            .tag-error-content {
+                opacity: 0;
+                visibility: hidden;
+                position: absolute;
+                padding: 0 8px;
+                left: 0;
+                top: calc(100% + 28px);
+                background-color: #777777;
+                box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+                width: auto;
+            }
+            .tag-error-content:before {
+                position: absolute;
+                z-index: -1;
+                content: "";
+                right: calc(50% - 10px);
+                top: -8px;
+                border-style: solid;
+                border-width: 0 10px 10px 10px;
+                border-color: transparent transparent #777777 transparent;
+                transition-duration: 0.3s;
+                transition-property: transform;
+            }
+            .tag-error-message {
+                text-align: left;
+            }
+        }
+
+        .tag-error .tag-error-content {
+            z-index: 10;
+            opacity: 1;
+            visibility: visible;
+            transform: translate(0, -20px);
+            transition: all 0.5s cubic-bezier(0.75, -0.02, 0.2, 0.97);
+        }
 
         /* The container <div> - needed to position the dropdown content */
         .dropdown {
@@ -171,7 +243,6 @@ header {
             padding: 0px 16px;
             font-size: 16px;
             border: none;
-            border-left: 1px solid white;
             cursor: pointer;
             height: 100%;
             display: flex;
@@ -183,6 +254,10 @@ header {
                 cursor: pointer;
                 background-color: #323e4f;
             }
+        }
+
+        .border-left {
+            border-left: 1px solid white;
         }
     }
 

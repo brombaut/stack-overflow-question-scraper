@@ -3,7 +3,7 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Time</th>
+                <th>Posted</th>
                 <th>Vote Count</th>
                 <th>Answers</th>
                 <th>Status</th>

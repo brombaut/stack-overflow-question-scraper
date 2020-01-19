@@ -4,7 +4,8 @@
         :isRefreshing="isRefreshing"
         :filterType="filterTypes[filterType]"
         :filterDateRange="filterDateRange"
-        @refresh="fetchData"
+        :filterTag="filterTag"
+        @refresh="handleRefreshEvent"
         @changeFilterType="handleFilterTypeChange"
         @changeFilterDateRange="handleFilterDateRangeChange" />
       <main>
@@ -43,22 +44,24 @@ export default {
             },
             filterType: 'newest',
             filterDateRange: 7,
+            filterTag: 'android',
         };
     },
     methods: {
         fetchData() {
             this.isRefreshing = true;
-            scraper.scrapeStackOverflowSummaryQuestions(this.filterType, 'android', this.filterDateRange).then(objects => {
+            scraper.scrapeStackOverflowSummaryQuestions(this.filterType, this.filterTag, this.filterDateRange).then(objects => {
                 this.newestQuestions = objects;
                 this.isRefreshing = false;
             }).catch(err => {
                 this.isRefreshing = false;
             });
         },
-        handleRefreshEvent() {
+        handleRefreshEvent(tag) {
             if (this.isRefreshing) {
                 return;
             }
+            this.filterTag = tag;
             this.fetchData();
         },
         handleFilterTypeChange(newFilterType) {
