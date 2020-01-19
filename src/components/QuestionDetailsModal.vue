@@ -3,61 +3,61 @@
         id="modal-wrapper"
         @click.self="closeModal"
         :class="{modal: true, 'modal-show': isVisible, 'modal-hide': !isVisible}">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 v-if="detailsAreLoaded">{{ questionBodyDetails.fullTitle }}</h4>
-                    <h4 v-else>{{ questionSummaryDetails.title }}</h4>
-                    <div class='expand'></div>
-                    <div class="actions-container">
-                        <div class="so-link-container action">
-                            <a :href="questionSummaryDetails.absoluteHyperlink" target="_blank">
-                                <img class="so-link-image" src="@/assets/so_logo.png"/>
-                            </a>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 v-if="detailsAreLoaded">{{ questionBodyDetails.fullTitle }}</h4>
+                <h4 v-else>{{ questionSummaryDetails.title }}</h4>
+                <div class='expand'></div>
+                <div class="actions-container">
+                    <div class="so-link-container action">
+                        <a :href="questionSummaryDetails.absoluteHyperlink" target="_blank">
+                            <img class="so-link-image" src="@/assets/so_logo.png"/>
+                        </a>
+                    </div>
+                    <span
+                        class="close action"
+                        @click="closeModal">
+                        &times;
+                    </span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div v-show="detailsAreLoaded" class="question-body-container">
+                    <div id="question-body-question-container"></div>
+                    <div id="question-body-tags-contaer">
+                        <div
+                            v-for="tag in questionSummaryDetails.tagsArray"
+                            :key="tag"
+                            @click.stop="handleTagClick"
+                            :class="{ 'current-tag': filterTag === tag }"
+                            :data-tag-value="tag">
+                            {{ tag }}
                         </div>
-                        <span
-                            class="close action"
-                            @click="closeModal">
-                            &times;
-                        </span>
                     </div>
                 </div>
-                <div class="modal-body">
-                    <div v-show="detailsAreLoaded" class="question-body-container">
-                        <div id="question-body-question-container"></div>
-                        <div id="question-body-tags-contaer">
-                            <div
-                                v-for="tag in questionSummaryDetails.tagsArray"
-                                :key="tag"
-                                @click.stop="handleTagClick"
-                                :class="{ 'current-tag': filterTag === tag }"
-                                :data-tag-value="tag">
-                                {{ tag }}
-                            </div>
-                        </div>
-                    </div>
-                    <div v-show="!detailsAreLoaded" class="lds-dual-ring"></div>
+                <div v-show="!detailsAreLoaded" class="lds-dual-ring"></div>
+            </div>
+            <div class="modal-footer">
+                <div class='stat-container'>
+                    <span>Posted: {{ questionSummaryDetails.relativeTime }}</span>
                 </div>
-                <div class="modal-footer">
-                    <div class='stat-container'>
-                        <span>Posted: {{ questionSummaryDetails.relativeTime }}</span>
-                    </div>
-                    <div class='stat-container'>
-                        <span>Votes: {{ questionSummaryDetails.voteCount }}</span>
-                    </div>
-                    <div class='stat-container'>
-                        <span>Answers: {{ questionSummaryDetails.answers }}</span>
-                    </div>
-                    <div
-                        :class="{
-                             'stat-container': true,
-                             answered: isAnswered(questionSummaryDetails.status),
-                             accepted: isAccepted(questionSummaryDetails.status)
-                        }">
-                        <span>Status: {{ formatStatusString(questionSummaryDetails.status) }}</span>
-                    </div>
+                <div class='stat-container'>
+                    <span>Votes: {{ questionSummaryDetails.voteCount }}</span>
+                </div>
+                <div class='stat-container'>
+                    <span>Answers: {{ questionSummaryDetails.answers }}</span>
+                </div>
+                <div
+                    :class="{
+                            'stat-container': true,
+                            answered: isAnswered(questionSummaryDetails.status),
+                            accepted: isAccepted(questionSummaryDetails.status)
+                    }">
+                    <span>Status: {{ formatStatusString(questionSummaryDetails.status) }}</span>
                 </div>
             </div>
         </div>
+    </div>
 </template>
 
 <script>

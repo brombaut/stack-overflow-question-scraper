@@ -67,9 +67,6 @@ export default {
         };
     },
     computed: {
-        stacktackString() {
-            return `stacktack-${this.stacktackId}`;
-        },
         selectedQuestionSummaryDetails() {
             if (!this.selectedQuestionId) {
                 return {};

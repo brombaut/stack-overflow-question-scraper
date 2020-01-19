@@ -94,7 +94,9 @@
                         @keyup.enter="handleRefreshClick"/>
                 </span>
                 <div class="tag-error-content">
-                    <p class="tag-error-message"><b>Invlid Tag. </b>Only alphanumeric characters and '.', '#', '+' and '-' characters are allowed.</p>
+                    <p class="tag-error-message">
+                        <b>Invlid Tag. </b>Only alphanumeric characters and '.', '#', '+' and '-' characters are allowed.
+                    </p>
                 </div>
             </div>
             <button
