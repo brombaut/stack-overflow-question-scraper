@@ -46,6 +46,16 @@ function scrapeGenericQuestionSummaryFromQueryHtml(html) {
     return allQuestimSummaries;
 }
 
+function scrapeGenericQuestionDetailsFromQuestionHtml(html) {
+    const $ = buildHtmlTree(html);
+    const headerEl = $('#question-header');
+    const fullTitle = $(headerEl).find('.question-hyperlink').text();
+    console.log(fullTitle);
+    return {
+        fullTitle,
+    };
+}
+
 function buildHtmlTree(htmlString) {
     return cheerio.load(htmlString);
 }
@@ -59,14 +69,28 @@ export default {
         const filterQuery = buildFilterQuery(tab, tag, daysRange, pageSize);
         const url = `${corsPrefix}${baseUrl}${filterQuery}`;
         // TODO: Remove this
-        // if (true) {
-        //     const promise = new Promise((resolve, reject) => resolve(JSON.parse(testData)));
-        //     return promise.then(data => data);
-        // }
+        if (true) {
+            const promise = new Promise((resolve, reject) => resolve(JSON.parse(testData)));
+            return promise.then(data => data);
+        }
         return axios.get(url).then(response => {
             if (response.status === 200) {
                 const questionSummaries = scrapeGenericQuestionSummaryFromQueryHtml(response.data);
                 return questionSummaries;
+            }
+            console.error(response);
+            throw new Error({
+                code: response.status,
+                message: 'Could not retrieve data from Stack Overflow',
+            });
+        });
+    },
+    scrapeStackOverflowQuestionDetails(absoluteUrl) {
+        const url = `${corsPrefix}${absoluteUrl}`;
+        return axios.get(url).then(response => {
+            if (response.status === 200) {
+                const questionDetails = scrapeGenericQuestionDetailsFromQuestionHtml(response.data);
+                return questionDetails;
             }
             console.error(response);
             throw new Error({

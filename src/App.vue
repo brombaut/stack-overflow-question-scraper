@@ -1,27 +1,32 @@
 <template>
   <div id="app">
-      <MainHeader
-        :isRefreshing="isRefreshing"
-        :filterType="filterTypes[filterType]"
-        :filterDateRange="filterDateRange"
-        :filterTag="filterTag"
-        :filterPageSize="filterPageSize"
-        @refresh="handleRefreshEvent"
-        @changeFilterType="handleFilterTypeChange"
-        @changeFilterDateRange="handleFilterDateRangeChange"
-        @changeFilterPageSize="handleFilterPageSizeChange" />
-      <main>
-          <section>
-            <h2>{{ filterTypes[filterType] }} Questions</h2>
-            <SummaryTable
-                v-if="newestQuestions.length > 0"
-                :title="filterType"
-                :rows="newestQuestions"
-                :filterTag="filterTag"
-                @tagClicked="handleRefreshEvent"/>
-            <h3 v-else>No Data Found</h3>
-          </section>
-      </main>
+        <MainHeader
+            :isRefreshing="isRefreshing"
+            :filterType="filterTypes[filterType]"
+            :filterDateRange="filterDateRange"
+            :filterTag="filterTag"
+            :filterPageSize="filterPageSize"
+            @refresh="handleRefreshEvent"
+            @changeFilterType="handleFilterTypeChange"
+            @changeFilterDateRange="handleFilterDateRangeChange"
+            @changeFilterPageSize="handleFilterPageSizeChange" />
+        <main>
+            <section>
+                <h2>{{ filterTypes[filterType] }} Questions</h2>
+                <SummaryTable
+                    v-if="questionSummaries.length > 0"
+                    :title="filterType"
+                    :rows="questionSummaries"
+                    :filterTag="filterTag"
+                    @tagClicked="handleRefreshEvent"
+                    @rowClicked="handleQuestionSelected"/>
+                <h3 v-else>No Data Found</h3>
+            </section>
+        </main>
+        <QuestionDetailsModal
+            :show="showModal"
+            :questionSummaryDetails="selectedQuestionSummaryDetails"
+            @modalClosed="resetSelectedQuestion" />
   </div>
 </template>
 
@@ -29,6 +34,7 @@
 import scraper from '@/services/scraper';
 import SummaryTable from '@/components/SummaryTable.vue';
 import MainHeader from '@/components/MainHeader.vue';
+import QuestionDetailsModal from '@/components/QuestionDetailsModal.vue';
 
 
 export default {
@@ -36,11 +42,12 @@ export default {
     components: {
         SummaryTable,
         MainHeader,
+        QuestionDetailsModal,
     },
     data() {
         return {
-            newestQuestions: [],
-            mostVotedQuestions: [],
+            questionSummaries: [],
+            specificQuestionDetails: {},
             isRefreshing: false,
             filterTypes: {
                 newest: 'Newest',
@@ -52,13 +59,26 @@ export default {
             filterDateRange: 7,
             filterTag: 'android',
             filterPageSize: 10,
+            showModal: false,
+            selectedQuestionId: null,
         };
+    },
+    computed: {
+        stacktackString() {
+            return `stacktack-${this.stacktackId}`;
+        },
+        selectedQuestionSummaryDetails() {
+            if (!this.selectedQuestionId) {
+                return {};
+            }
+            return this.questionSummaries.find(q => q.id === this.selectedQuestionId);
+        },
     },
     methods: {
         fetchData() {
             this.isRefreshing = true;
             scraper.scrapeStackOverflowSummaryQuestions(this.filterType, this.filterTag, this.filterDateRange, this.filterPageSize).then(objects => {
-                this.newestQuestions = objects.slice(0, this.filterPageSize);
+                this.questionSummaries = objects.slice(0, this.filterPageSize + 1);
                 this.isRefreshing = false;
             }).catch(err => {
                 this.isRefreshing = false;
@@ -82,6 +102,38 @@ export default {
         handleFilterPageSizeChange(newPageSize) {
             this.filterPageSize = newPageSize;
             this.fetchData();
+        },
+        handleQuestionSelected(questionId) {
+            this.selectedQuestionId = questionId;
+            const selectedQuestion = this.questionSummaries.find(q => q.id === questionId);
+            if (!selectedQuestion.detailsFetched) {
+                const selectedQuestionSummary = this.selectedQuestionSummaryDetails;
+                if (selectedQuestionSummary) {
+                    scraper.scrapeStackOverflowQuestionDetails(selectedQuestionSummary.absoluteHyperlink).then(this.addQuestionDetails);
+                }
+            }
+            this.showModal = true;
+        },
+        addQuestionDetails(details) {
+            this.$set(this.specificQuestionDetails, `${this.selectedQuestionId}`, details);
+            // this.specificQuestionDetails[`${this.selectedQuestionId}`] = details;
+            // this.$nextTick().then(() => {
+            //     const selectedQuestion = this.questionSummaries.find(q => q.id === this.selectedQuestionId);
+            //     selectedQuestion.detailsFetched = true;
+            //     selectedQuestion.fullTitle = details.fullTitle;
+            // });
+        },
+        resetSelectedQuestion() {
+            this.selectedQuestionId = null;
+            this.showModal = false;
+        },
+    },
+    watch: {
+        specificQuestionDetails: {
+            handler(newVal) {
+                console.log('WATCHER', newVal);
+            },
+            deep: true,
         },
     },
     mounted() {

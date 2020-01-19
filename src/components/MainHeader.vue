@@ -83,7 +83,15 @@
                 </div>
             </div>
             <div id='tag-filter-container' class="action">
-                <input id='filter-tag-input' type='text' placeholder="Enter a tag..." :value="filterTag"/>
+                <span class="tag-container">
+                    Tag:&nbsp;
+                    <input
+                        id='filter-tag-input'
+                        type='text'
+                        placeholder="Enter a tag..."
+                        :value="filterTag"
+                        @keyup.enter="handleRefreshClick"/>
+                </span>
                 <div class="tag-error-content">
                     <p class="tag-error-message"><b>Invlid Tag. </b>Only alphanumeric characters and '.', '#', '+' and '-' characters are allowed.</p>
                 </div>
@@ -181,6 +189,13 @@ header {
             align-items: center;
             border-left: 1px solid white;
             position: relative;
+
+            .tag-container {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                padding: 0 8px;
+            }
 
             input {
                 font-size: 1rem;

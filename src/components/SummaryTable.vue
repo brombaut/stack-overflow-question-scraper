@@ -10,13 +10,13 @@
                 <th>Status</th>
                 <th>Tags</th>
                 <th></th>  <!-- View On StackOverflow -->
-                <!-- <th></th>   -->
             </tr>
         </thead>
         <tbody>
             <tr
                 v-for="row in rows"
-                :key="row.id">
+                :key="row.id"
+                @click="handleRowClick(row)">
                 <td>{{ row.id }}</td>
                 <td><b>{{ row.title }}</b></td>
                 <td>{{ row.relativeTime }}</td>
@@ -29,18 +29,19 @@
                     <div
                         v-for="tag in row.tagsArray"
                         :key="tag"
-                        @click="handleTagClick"
+                        @click.stop="handleTagClick"
                         :class="{ 'current-tag': filterTag === tag }"
                         :data-tag-value="tag">
                         {{ tag }}
                     </div>
                 </td>
                 <td>
-                    <a class='go-to-stack-overflow-link' :href="row.absoluteHyperlink" target="_blank">
-                        Stack Overflow
-                    </a>
+                    <div class='so-link-container'>
+                        <a @click.stop="" :href="row.absoluteHyperlink" target="_blank">
+                            <img class="so-link-image" src="@/assets/so_logo.png"/>
+                        </a>
+                    </div>
                 </td>
-                <!-- <td><button>Export</button></td> -->
             </tr>
         </tbody>
     </table>
@@ -72,6 +73,9 @@ export default {
             const { tagValue } = el.target.dataset;
             this.$emit('tagClicked', tagValue);
         },
+        handleRowClick(row) {
+            this.$emit('rowClicked', row.id);
+        },
     },
 };
 </script>
@@ -83,7 +87,7 @@ export default {
     width: 100%;
 
     td, th {
-        border: 1px solid #eeeeee;
+        border: 1px solid #bbbbbb;
         text-align: left;
         padding: 8px;
     }
@@ -97,7 +101,7 @@ export default {
 
     tbody {
         tr:nth-child(even) {
-            background-color: #eeeeee;
+            background-color: #dedede;
         }
 
         tr:hover {
@@ -139,7 +143,28 @@ export default {
 
             .current-tag {
                 background-color: #2768bd;
+
+                &:hover {
+                    background-color: darken(#2768bd, 10%);
+                }
             }
+        }
+
+        .so-link-container {
+            border-radius: 50%;
+            height: 40px;
+            width: 40px;
+
+            &:hover {
+                cursor: pointer;
+                background-color: #828994;
+            }
+        }
+
+        .so-link-image {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
         }
     }
 
