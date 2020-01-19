@@ -228,6 +228,10 @@ export default {
             justify-content: center;
             align-items: center;
 
+            &:hover {
+                cursor: alias;
+            }
+
             .so-link-image {
                 height: 40px;
                 width: 40px;

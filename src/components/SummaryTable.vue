@@ -156,7 +156,7 @@ export default {
             width: 40px;
 
             &:hover {
-                cursor: pointer;
+                cursor: alias;
                 background-color: #828994;
             }
         }
