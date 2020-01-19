@@ -27,7 +27,9 @@
             :show="showModal"
             :questionSummaryDetails="selectedQuestionSummaryDetails"
             :questionBodyDetails="selectedQuestionBodyDetails"
-            @modalClosed="resetSelectedQuestion" />
+            :filterTag="filterTag"
+            @modalClosed="resetSelectedQuestion"
+            @tagClicked="handleRefreshEvent" />
   </div>
 </template>
 

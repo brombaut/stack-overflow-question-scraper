@@ -22,7 +22,19 @@
                     </div>
                 </div>
                 <div class="modal-body">
-                    <div v-show="detailsAreLoaded" id="question-body-container"></div>
+                    <div v-show="detailsAreLoaded" class="question-body-container">
+                        <div id="question-body-question-container"></div>
+                        <div id="question-body-tags-contaer">
+                            <div
+                                v-for="tag in questionSummaryDetails.tagsArray"
+                                :key="tag"
+                                @click.stop="handleTagClick"
+                                :class="{ 'current-tag': filterTag === tag }"
+                                :data-tag-value="tag">
+                                {{ tag }}
+                            </div>
+                        </div>
+                    </div>
                     <div v-show="!detailsAreLoaded" class="lds-dual-ring"></div>
                 </div>
                 <div class="modal-footer">
@@ -43,7 +55,6 @@
                         }">
                         <span>Status: {{ formatStatusString(questionSummaryDetails.status) }}</span>
                     </div>
-                    <!-- TODO: Tags -->
                 </div>
             </div>
         </div>
@@ -55,6 +66,7 @@ export default {
         show: Boolean,
         questionSummaryDetails: Object,
         questionBodyDetails: Object,
+        filterTag: String,
     },
     data() {
         return {
@@ -88,13 +100,18 @@ export default {
         isAccepted(statusString) {
             return statusString && statusString.includes('accepted');
         },
+        handleTagClick(el) {
+            const { tagValue } = el.target.dataset;
+            this.$emit('tagClicked', tagValue);
+            this.closeModal();
+        },
     },
     watch: {
         show(newVal) {
             this.isVisible = newVal;
         },
         detailsAreLoaded(newVal) {
-            const bodyContainerEl = document.querySelector('#question-body-container');
+            const bodyContainerEl = document.querySelector('#question-body-question-container');
             if (newVal) {
                 bodyContainerEl.innerHTML = this.questionBodyDetails.questionBodyRawHtml;
             } else {
@@ -221,13 +238,48 @@ export default {
 }
 
 .modal-body {
-    padding: 2px 16px;
-    margin: 12px 0;
-    max-height: 600px;
-    overflow-y: auto;
+    .question-body-container {
+        display: flex;
 
-    #question-body-container {
-        text-align: left;
+        #question-body-question-container {
+            text-align: left;
+            flex: 1;
+            max-height: 600px;
+            overflow-y: auto;
+            padding: 16px;
+            margin-right: 8px;
+        }
+
+        #question-body-tags-contaer {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background-color: #dddddd;
+            box-shadow: -4px 0px 8px -2px #aaaaaa;
+
+            div {
+                margin: 4px;
+                padding: 4px 8px;
+                border-radius: 4px;
+                background-color: #546070;
+                color: white;
+                font-size: 1rem;
+
+                &:hover {
+                    background-color: #323e4f;
+                    cursor: pointer;
+                }
+            }
+
+            .current-tag {
+                background-color: #2768bd;
+
+                &:hover {
+                    background-color: darken(#2768bd, 10%);
+                }
+            }
+        }
     }
 
     .lds-dual-ring {
