@@ -57,6 +57,31 @@
                     </span>
                 </div>
             </div>
+            <div class="dropdown">
+                <button class="dropbtn border-left">Query Size: {{ filterPageSize }} Rows</button>
+                <div class="dropdown-content">
+                    <span
+                        @click='handlePageSizeDropdownSelection'
+                        data-filter-page-size=10>
+                        10 Rows
+                    </span>
+                    <span
+                        @click='handlePageSizeDropdownSelection'
+                        data-filter-page-size=15>
+                        15 Rows
+                    </span>
+                    <span
+                        @click='handlePageSizeDropdownSelection'
+                        data-filter-page-size=30>
+                        30 Rows
+                    </span>
+                    <span
+                        @click='handlePageSizeDropdownSelection'
+                        data-filter-page-size=50>
+                        50 Rows
+                    </span>
+                </div>
+            </div>
             <div id='tag-filter-container' class="action">
                 <input id='filter-tag-input' type='text' placeholder="Enter a tag..." :value="filterTag"/>
                 <div class="tag-error-content">
@@ -84,6 +109,7 @@ export default {
         filterType: String,
         filterDateRange: Number,
         filterTag: String,
+        filterPageSize: Number,
     },
     computed: {
         filterDateSelectorString() {
@@ -108,6 +134,10 @@ export default {
         handleFilterDateRangeDropdownSelection(evt) {
             const newFilterDateRange = Number(evt.target.dataset.filterDateRange);
             this.$emit('changeFilterDateRange', newFilterDateRange);
+        },
+        handlePageSizeDropdownSelection(evt) {
+            const newFilterPageSize = Number(evt.target.dataset.filterPageSize);
+            this.$emit('changeFilterPageSize', newFilterPageSize);
         },
         validateTag(tag) {
             if (tag.length === 0) {

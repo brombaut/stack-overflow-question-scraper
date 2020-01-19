@@ -5,15 +5,19 @@
         :filterType="filterTypes[filterType]"
         :filterDateRange="filterDateRange"
         :filterTag="filterTag"
+        :filterPageSize="filterPageSize"
         @refresh="handleRefreshEvent"
         @changeFilterType="handleFilterTypeChange"
-        @changeFilterDateRange="handleFilterDateRangeChange" />
+        @changeFilterDateRange="handleFilterDateRangeChange"
+        @changeFilterPageSize="handleFilterPageSizeChange" />
       <main>
           <section>
             <h2>{{ filterTypes[filterType] }} Questions</h2>
             <SummaryTable
+                v-if="newestQuestions.length > 0"
                 :title="filterType"
                 :rows="newestQuestions" />
+            <h3 v-else>No Data Found</h3>
           </section>
       </main>
   </div>
@@ -45,13 +49,14 @@ export default {
             filterType: 'newest',
             filterDateRange: 7,
             filterTag: 'android',
+            filterPageSize: 10,
         };
     },
     methods: {
         fetchData() {
             this.isRefreshing = true;
-            scraper.scrapeStackOverflowSummaryQuestions(this.filterType, this.filterTag, this.filterDateRange).then(objects => {
-                this.newestQuestions = objects;
+            scraper.scrapeStackOverflowSummaryQuestions(this.filterType, this.filterTag, this.filterDateRange, this.filterPageSize).then(objects => {
+                this.newestQuestions = objects.slice(0, this.filterPageSize);
                 this.isRefreshing = false;
             }).catch(err => {
                 this.isRefreshing = false;
@@ -70,6 +75,10 @@ export default {
         },
         handleFilterDateRangeChange(newDateRange) {
             this.filterDateRange = newDateRange;
+            this.fetchData();
+        },
+        handleFilterPageSizeChange(newPageSize) {
+            this.filterPageSize = newPageSize;
             this.fetchData();
         },
     },
