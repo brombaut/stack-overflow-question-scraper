@@ -1,5 +1,6 @@
 <template>
     <header>
+        <img class="scraper-logo" src="@/assets/scraper.png"/>
         <h3>Stack Overflow Data Scraper</h3>
         <div class="expand"></div>
         <div class="actions-container">
@@ -172,8 +173,14 @@ header {
     width: 100%;
     top: 0;
 
+    .scraper-logo {
+        height: 60px;
+        width: 60px;
+        margin: 0 16px;
+    }
+
     h3 {
-        margin: 8px 16px;
+        margin: 8px 0px;
     }
 
     .expand{

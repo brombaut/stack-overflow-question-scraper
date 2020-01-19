@@ -30,7 +30,7 @@
                         v-for="tag in row.tagsArray"
                         :key="tag"
                         @click.stop="handleTagClick"
-                        :class="{ 'current-tag': filterTag === tag }"
+                        :class="{ tag: true, 'current-tag': filterTag === tag }"
                         :data-tag-value="tag">
                         {{ tag }}
                     </div>
@@ -127,7 +127,7 @@ export default {
             flex-wrap: wrap;
             max-width: 250px;
 
-            div {
+            .tag {
                 margin: 4px;
                 padding: 4px 8px;
                 border-radius: 4px;

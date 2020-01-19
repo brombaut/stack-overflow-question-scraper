@@ -74,10 +74,10 @@ export default {
         const filterQuery = buildFilterQuery(tab, tag, daysRange, pageSize);
         const url = `${corsPrefix}${baseUrl}${filterQuery}`;
         // TODO: Remove this
-        if (true) {
-            const promise = new Promise((resolve, reject) => resolve(JSON.parse(testData)));
-            return promise.then(data => data);
-        }
+        // if (true) {
+        //     const promise = new Promise((resolve, reject) => resolve(JSON.parse(testData)));
+        //     return promise.then(data => data);
+        // }
         return axios.get(url).then(response => {
             if (response.status === 200) {
                 const questionSummaries = scrapeGenericQuestionSummaryFromQueryHtml(response.data);
