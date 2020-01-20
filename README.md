@@ -110,4 +110,5 @@ Below is a list of features/functionality that I think would be worth implementi
 - Investigate the request limit imposed by Stack Overflow.
 - Break up the Vue comonents to make them more modular, as they have gotten a bit large and are each handling a variety of functinality.
 - Add tests. Lots of tests.
-- This application was not built with modile devices in mind - would be cool to get it working on any screen size.
+- This application was not built with mobile devices in mind - would be cool to get it working on any screen size.
+- Add custom style classes to question body to display code tags and other elements like that better
