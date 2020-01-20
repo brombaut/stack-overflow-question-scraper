@@ -20,23 +20,23 @@ After building an application that would retrieve the 10 rewest and 10 most view
 
 ### Querying and Viewing Stack Overflow Questions
 Users are able to filter the results by:
-- **Type** - Select an option from the dropdown will update the query and load the new results automatically.
+- **Type** - Selecting an option from the dropdown will update the query and load the new results automatically.
     - Newest (Default)
     - Most Votes
     - Relevance
     - Active
-- **Search Period** - Select an option from the dropdown will update the query and load the new results automatically.
+- **Search Period** - Selecting an option from the dropdown will update the query and load the new results automatically.
     - Previous Day
     - Previous 7 Days (Default)
     - Previous 15 Days
     - Previous 30 Days
-- **Query Size** - Select an option from the dropdown to will update the query and load the new results automatically.
+- **Query Size** - Selecting an option from the dropdown will update the query and load the new results automatically.
     - Return 10 Results (Default)
     - Return 15 Results
     - Return 30 Results
     - Return 50 Results
 - **Question Tag** - Enter a new tag value and click the 'Refresh' button, or hit the 'Enter' key
-    - Users can enter a tag into a search bar in order to only retrieve questions that have been tagged with that string (no tag is also accepted). Default value is **android**.
+    - Users can enter a tag into a search bar in order to only retrieve questions that have been tagged with that string (no tag is also accepted). Default value is '**android**'.
 
 The information returned is displayed in a table. Each row contains the following information for a question:
 - Stack Overflow question ID
@@ -86,10 +86,10 @@ The main components of the application are descriped below, with any additional 
 This module is used to make requests to stack overflow based on query parameters it recieves from higher level modules, builds the HTML tree, extracts the relevant information, and returns it to the calling module. The requests are made to Stack Overflow using the [axios](https://github.com/axios/axios) library. Once the raw HTML document is retrieved, the tree is built and the data extracted using the [cheerio](https://cheerio.js.org/) library.
 
 ### App.vue
-The root element of the application. All event that are emitted from child components are handled in this modules. This is also the module that communicates with the scraper module, and passed data recieved down to it's child components.
+The root element of the application. All event that are emitted from child components are handled in this module. This is also the module that communicates with the scraper module, and passes any data recieved down to it's child components.
 
 ### MainHeader.vue
-The main header. The options that are used to build the query for the scraper module are selected in this module. Hovering the cursor over the *Filter By*, *Search Period*, or *Query Size* labels will display a dropdown with the available options to select. Clicking one of these option will update the query and load the new results automatically. There is also a text input box that users can enter a tag value to filter their results by. Once they enter a value, they must click the *Refresh* button to the right of the text input to update the query.
+The main header. The options that are used to build the query for the scraper module are selected in this module. Hovering the cursor over the *Filter By*, *Search Period*, or *Query Size* labels will display a dropdown with the available options to select. Clicking one of these option will update the query and load the new results automatically. There is also a text input box that users can enter a tag value in to filter their results by. Once they enter a value, they must click the '**Refresh**' button to the right of the text input to update the query.
 
 ### SummaryTable.vue
 The table that contains all the question summaries returned from the query. The table contains the following columns: Question ID; Question Title; Posted Date; Votes; Answers; Status; Tags; and Stack Overflow Question Link. Clicking the Stack Overflow Link icon will open the link in a new tab.
@@ -110,3 +110,4 @@ Below is a list of features/functionality that I think would be worth implementi
 - Investigate the request limit imposed by Stack Overflow.
 - Break up the Vue comonents to make them more modular, as they have gotten a bit large and are each handling a variety of functinality.
 - Add tests. Lots of tests.
+- This application was not built with modile devices in mind - would be cool to get it working on any screen size.
