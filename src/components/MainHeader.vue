@@ -1,7 +1,7 @@
 <template>
     <header>
         <img class="scraper-logo" src="@/assets/scraper.png"/>
-        <h3>Stack Overflow Data Scraper</h3>
+        <h3>Stack Overflow Question Scraper</h3>
         <div class="expand"></div>
         <div class="actions-container">
             <div class="dropdown">
