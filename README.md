@@ -1,4 +1,4 @@
-# Queens SAIL Programming Task
+# Stack Overflow Question Scraoer
 Deployed at https://brombaut.github.io/queens-sail-programming-task/
 
 ## Initial Problem Description
