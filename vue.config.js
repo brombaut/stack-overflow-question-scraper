@@ -1,3 +1,3 @@
 module.exports = {
-    publicPath: '/queens-sail-programming-task/',
+    publicPath: '/stack-overflow-question-scraper/',
 };

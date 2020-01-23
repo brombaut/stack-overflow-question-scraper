@@ -13,6 +13,6 @@ git add -A
 git commit -m 'deploy'
 
 # if you are deploying to https://<USERNAME>.github.io/<REPO>
-git push -f git@github.com:brombaut/queens-sail-programming-task.git master:gh-pages
+git push -f git@github.com:brombaut/stack-overflow-question-scraper.git master:gh-pages
 
 cd -
