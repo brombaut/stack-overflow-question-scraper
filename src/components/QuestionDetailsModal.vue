@@ -29,7 +29,7 @@
                             v-for="tag in questionSummaryDetails.tagsArray"
                             :key="tag"
                             @click.stop="handleTagClick"
-                            :class="{ 'current-tag': filterTag === tag }"
+                            :class="{ 'current-tag': filterTags.includes(tag) }"
                             :data-tag-value="tag">
                             {{ tag }}
                         </div>
@@ -49,9 +49,9 @@
                 </div>
                 <div
                     :class="{
-                            'stat-container': true,
-                            answered: isAnswered(questionSummaryDetails.status),
-                            accepted: isAccepted(questionSummaryDetails.status)
+                        'stat-container': true,
+                        answered: isAnswered(questionSummaryDetails.status),
+                        accepted: isAccepted(questionSummaryDetails.status)
                     }">
                     <span>Status: {{ formatStatusString(questionSummaryDetails.status) }}</span>
                 </div>
@@ -66,7 +66,7 @@ export default {
         show: Boolean,
         questionSummaryDetails: Object,
         questionBodyDetails: Object,
-        filterTag: String,
+        filterTags: Array,
     },
     data() {
         return {
@@ -102,7 +102,8 @@ export default {
         },
         handleTagClick(el) {
             const { tagValue } = el.target.dataset;
-            this.$emit('tagClicked', tagValue);
+            const tagsArray = [tagValue];
+            this.$emit('tagClicked', tagsArray);
             this.closeModal();
         },
     },
@@ -132,7 +133,7 @@ export default {
 };
 </script>
 
-<style lang='scss'>
+<style scoped lang='scss'>
 .modal {
     display: none;
     justify-content: center;

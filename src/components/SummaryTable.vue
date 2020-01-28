@@ -28,16 +28,19 @@
                 <td class="tags-column">
                     <div
                         v-for="tag in row.tagsArray"
-                        :key="tag"
+                        :key="row.id + '-' + tag"
                         @click.stop="handleTagClick"
-                        :class="{ tag: true, 'current-tag': filterTag === tag }"
+                        :class="{ tag: true, 'current-tag': filterTags.includes(tag) }"
                         :data-tag-value="tag">
                         {{ tag }}
                     </div>
                 </td>
                 <td>
                     <div class='so-link-container'>
-                        <a @click.stop="" :href="row.absoluteHyperlink" target="_blank">
+                        <a
+                            @click.stop=""
+                            :href="row.absoluteHyperlink"
+                            target="_blank">
                             <img class="so-link-image" src="@/assets/so_logo.png"/>
                         </a>
                     </div>
@@ -52,7 +55,7 @@ export default {
     props: {
         title: String,
         rows: Array,
-        filterTag: String,
+        filterTags: Array,
     },
     methods: {
         formatStatusString(statusString) {
@@ -71,7 +74,8 @@ export default {
         },
         handleTagClick(el) {
             const { tagValue } = el.target.dataset;
-            this.$emit('tagClicked', tagValue);
+            const tagsArray = [tagValue];
+            this.$emit('tagClicked', tagsArray);
         },
         handleRowClick(row) {
             this.$emit('rowClicked', row.id);

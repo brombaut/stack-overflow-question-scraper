@@ -101,14 +101,14 @@ The modal element. Once the question body is retrieved, it is rendered in this c
 
 ## Future Work
 Below is a list of features/functionality that I think would be worth implementing in the future:
-- Ability to export all extracted data to .json or .csv formats.
-- Ability to filter on multiple tags.
-- Ability to filter by text in the title of the question.
-- Ability to filter by only questions, only answers, or both.
-- More date range filters (e.g. hours, weeks, months, etc.)
-- Better error handling - give user some feedback if, for example, a call to fetch the question body fails.
-- Investigate the request limit imposed by Stack Overflow.
-- Break up the Vue comonents to make them more modular, as they have gotten a bit large and are each handling a variety of functinality.
-- Add tests. Lots of tests.
-- This application was not built with mobile devices in mind - would be cool to get it working on any screen size.
-- Add custom style classes to question body to display code tags and other elements like that better
+- [ ] Ability to export all extracted data to .json or .csv formats.
+- [x] Ability to filter on multiple tags.
+- [ ] Ability to filter by text in the title of the question.
+- [ ] Ability to filter by only questions, only answers, or both.
+- [ ] More date range filters (e.g. hours, weeks, months, etc.)
+- [ ] Better error handling - give user some feedback if, for example, a call to fetch the question body fails.
+- [ ] Investigate the request limit imposed by Stack Overflow.
+- [x] Break up the Vue comonents to make them more modular, as they have gotten a bit large and are each handling a variety of functinality.
+- [ ] Add tests. Lots of tests.
+- [ ] This application was not built with mobile devices in mind - would be cool to get it working on any screen size.
+- [ ] Add custom style classes to question body to display code tags and other elements like that better

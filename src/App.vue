@@ -4,12 +4,13 @@
             :isRefreshing="isRefreshing"
             :filterType="filterTypes[filterType]"
             :filterDateRange="filterDateRange"
-            :filterTag="filterTag"
+            :filterTags="filterTags"
             :filterPageSize="filterPageSize"
             @refresh="handleRefreshEvent"
             @changeFilterType="handleFilterTypeChange"
             @changeFilterDateRange="handleFilterDateRangeChange"
-            @changeFilterPageSize="handleFilterPageSizeChange" />
+            @changeFilterPageSize="handleFilterPageSizeChange"
+            @updateTempTags="handleUpdateTempTags" />
         <main>
             <section>
                 <h2>{{ filterTypes[filterType] }} Questions</h2>
@@ -17,8 +18,8 @@
                     v-if="questionSummaries.length > 0"
                     :title="filterType"
                     :rows="questionSummaries"
-                    :filterTag="filterTag"
-                    @tagClicked="handleRefreshEvent"
+                    :filterTags="filterTags"
+                    @tagClicked="updateFilterTags"
                     @rowClicked="handleQuestionSelected"/>
                 <h3 v-else>No Data Found</h3>
             </section>
@@ -27,9 +28,9 @@
             :show="showModal"
             :questionSummaryDetails="selectedQuestionSummaryDetails"
             :questionBodyDetails="selectedQuestionBodyDetails"
-            :filterTag="filterTag"
+            :filterTags="filterTags"
             @modalClosed="resetSelectedQuestion"
-            @tagClicked="handleRefreshEvent" />
+            @tagClicked="updateFilterTags" />
   </div>
 </template>
 
@@ -60,10 +61,15 @@ export default {
             },
             filterType: 'newest',
             filterDateRange: 7,
-            filterTag: 'android',
+            filterTags: [
+                'android',
+            ],
             filterPageSize: 10,
             showModal: false,
             selectedQuestionId: null,
+            tempTags: [
+                'android',
+            ],
         };
     },
     computed: {
@@ -83,18 +89,18 @@ export default {
     methods: {
         fetchData() {
             this.isRefreshing = true;
-            scraper.scrapeStackOverflowSummaryQuestions(this.filterType, this.filterTag, this.filterDateRange, this.filterPageSize).then(objects => {
+            scraper.scrapeStackOverflowSummaryQuestions(this.filterType, this.filterTags, this.filterDateRange, this.filterPageSize).then(objects => {
                 this.questionSummaries = objects.slice(0, this.filterPageSize + 1);
                 this.isRefreshing = false;
             }).catch(err => {
                 this.isRefreshing = false;
             });
         },
-        handleRefreshEvent(tag) {
+        handleRefreshEvent() {
             if (this.isRefreshing) {
                 return;
             }
-            this.filterTag = tag;
+            this.useTempTags();
             this.fetchData();
         },
         handleFilterTypeChange(newFilterType) {
@@ -107,6 +113,10 @@ export default {
         },
         handleFilterPageSizeChange(newPageSize) {
             this.filterPageSize = newPageSize;
+            this.fetchData();
+        },
+        updateFilterTags(newTags) {
+            this.filterTags = newTags;
             this.fetchData();
         },
         handleQuestionSelected(questionId) {
@@ -131,6 +141,12 @@ export default {
             this.selectedQuestionId = null;
             document.body.style.overflow = 'auto';
             this.showModal = false;
+        },
+        handleUpdateTempTags(newTempTags) {
+            this.tempTags = newTempTags;
+        },
+        useTempTags() {
+            this.filterTags = [...this.tempTags];
         },
     },
     mounted() {

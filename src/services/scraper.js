@@ -62,13 +62,17 @@ function buildHtmlTree(htmlString) {
     return cheerio.load(htmlString);
 }
 
-function buildFilterQuery(tab, tag, daysRange, pageSize) {
-    return `/search?tab=${tab}&pagesize=${pageSize}&q=%5b${tag}%5d%20is%3aquestion%20created%3a${daysRange}d..`;
+function buildFilterQuery(tab, tagList, daysRange, pageSize) {
+    let tagFilterString = '';
+    for (let i = 0; i < tagList.length; ++i) {
+        tagFilterString += `[${tagList[i]}]`;
+    }
+    return `/search?tab=${tab}&pagesize=${pageSize}&q=${tagFilterString} is:question created:${daysRange}d..`;
 }
 
 export default {
-    scrapeStackOverflowSummaryQuestions(tab, tag, daysRange, pageSize) {
-        const filterQuery = buildFilterQuery(tab, tag, daysRange, pageSize);
+    scrapeStackOverflowSummaryQuestions(tab, tagList, daysRange, pageSize) {
+        const filterQuery = buildFilterQuery(tab, tagList, daysRange, pageSize);
         const url = `${corsPrefix}${baseUrl}${filterQuery}`;
         return axios.get(url).then(response => {
             if (response.status === 200) {
