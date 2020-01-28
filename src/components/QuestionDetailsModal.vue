@@ -133,7 +133,7 @@ export default {
 };
 </script>
 
-<style scoped lang='scss'>
+<style lang='scss'>
 .modal {
     display: none;
     justify-content: center;
@@ -147,194 +147,195 @@ export default {
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0,0.4);
 }
-
-.modal-content {
-    position: relative;
-    background-color: #fefefe;
-    margin: auto;
-    padding: 0;
-    border: 1px solid #888;
-    width: 80%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s
-}
-
-@-webkit-keyframes animatetop {
-    from {
-        top:-300px; opacity:0
-    }
-    to {
-        top:0; opacity:1
-    }
-}
-
-@keyframes animatetop {
-    from {
-        top:-300px; opacity:0
-    }
-    to {
-        top:0; opacity:1
-    }
-}
-
-.close {
-    color: white;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #cccccc;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.modal-header {
-    padding: 2px 16px;
-    background-color: #323e4f;
-    color: white;
-    display: flex;
-    align-items: center;
-
-    h4 {
-        text-align: left;
-        margin-right: 8px;
+#modal-wrapper {
+    .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 80%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        -webkit-animation-name: animatetop;
+        -webkit-animation-duration: 0.4s;
+        animation-name: animatetop;
+        animation-duration: 0.4s
     }
 
-    .expand {
-        flex: 1;
-    }
-
-    .actions-container {
-        display: flex;
-
-        .action {
-            margin: 0 0px;
-            border-radius: 50%;
-            height: 40px;
-            width: 40px;
-
-            &:hover {
-                cursor: pointer;
-                background-color: lighten(#323e4f, 10%);
-            }
+    @-webkit-keyframes animatetop {
+        from {
+            top:-300px; opacity:0
         }
-
-        .so-link-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            &:hover {
-                cursor: alias;
-            }
-
-            .so-link-image {
-                height: 40px;
-                width: 40px;
-                border-radius: 50%;
-            }
+        to {
+            top:0; opacity:1
         }
     }
-}
 
-.modal-body {
-    .question-body-container {
+    @keyframes animatetop {
+        from {
+            top:-300px; opacity:0
+        }
+        to {
+            top:0; opacity:1
+        }
+    }
+
+    .close {
+        color: white;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #cccccc;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-header {
+        padding: 2px 16px;
+        background-color: #323e4f;
+        color: white;
         display: flex;
+        align-items: center;
 
-        #question-body-question-container {
+        h4 {
             text-align: left;
-            flex: 1;
-            max-height: 600px;
-            overflow-y: auto;
-            padding: 16px;
             margin-right: 8px;
         }
 
-        #question-body-tags-contaer {
-            padding: 16px;
+        .expand {
+            flex: 1;
+        }
+
+        .actions-container {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            background-color: #dddddd;
-            box-shadow: -4px 0px 8px -2px #aaaaaa;
 
-            div {
-                margin: 4px;
-                padding: 4px 8px;
-                border-radius: 4px;
-                background-color: #546070;
-                color: white;
-                font-size: 1rem;
+            .action {
+                margin: 0 0px;
+                border-radius: 50%;
+                height: 40px;
+                width: 40px;
 
                 &:hover {
-                    background-color: #323e4f;
                     cursor: pointer;
+                    background-color: lighten(#323e4f, 10%);
                 }
             }
 
-            .current-tag {
-                background-color: #2768bd;
+            .so-link-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
                 &:hover {
-                    background-color: darken(#2768bd, 10%);
+                    cursor: alias;
+                }
+
+                .so-link-image {
+                    height: 40px;
+                    width: 40px;
+                    border-radius: 50%;
                 }
             }
         }
     }
 
-    .lds-dual-ring {
-        display: inline-block;
-    }
+    .modal-body {
+        .question-body-container {
+            display: flex;
 
-    .lds-dual-ring:after {
-        content: " ";
-        display: block;
-        width: 80px;
-        height: 80px;
-        margin: 8px;
-        border-radius: 50%;
-        border: 8px solid #323e4f;
-        border-color: #323e4f transparent #323e4f transparent;
-        animation: lds-dual-ring 1.2s linear infinite;
-    }
-    @keyframes lds-dual-ring {
-        0% {
-            transform: rotate(0deg);
+            #question-body-question-container {
+                text-align: left;
+                flex: 1;
+                max-height: 600px;
+                overflow-y: auto;
+                padding: 16px;
+                margin-right: 8px;
+            }
+
+            #question-body-tags-contaer {
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                background-color: #dddddd;
+                box-shadow: -4px 0px 8px -2px #aaaaaa;
+
+                div {
+                    margin: 4px;
+                    padding: 4px 8px;
+                    border-radius: 4px;
+                    background-color: #546070;
+                    color: white;
+                    font-size: 1rem;
+
+                    &:hover {
+                        background-color: #323e4f;
+                        cursor: pointer;
+                    }
+                }
+
+                .current-tag {
+                    background-color: #2768bd;
+
+                    &:hover {
+                        background-color: darken(#2768bd, 10%);
+                    }
+                }
+            }
         }
-        100% {
-            transform: rotate(360deg);
+
+        .lds-dual-ring {
+            display: inline-block;
+        }
+
+        .lds-dual-ring:after {
+            content: " ";
+            display: block;
+            width: 80px;
+            height: 80px;
+            margin: 8px;
+            border-radius: 50%;
+            border: 8px solid #323e4f;
+            border-color: #323e4f transparent #323e4f transparent;
+            animation: lds-dual-ring 1.2s linear infinite;
+        }
+        @keyframes lds-dual-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
         }
     }
-}
 
-.modal-footer {
-    background-color: #323e4f;
-    color: white;
-    display: flex;
-    justify-content: space-around;
-
-    .stat-container {
-        padding: 12px 0px;
-        flex: 1;
-    }
-
-    .stat-container:not(:last-child) {
-        border-right: 1px solid white;
-    }
-
-    .answered {
-        color: #11c04b;
-        font-style: bold;
-    }
-
-    .accepted {
-        background-color: #5eba7d;
+    .modal-footer {
+        background-color: #323e4f;
         color: white;
+        display: flex;
+        justify-content: space-around;
+
+        .stat-container {
+            padding: 12px 0px;
+            flex: 1;
+        }
+
+        .stat-container:not(:last-child) {
+            border-right: 1px solid white;
+        }
+
+        .answered {
+            color: #11c04b;
+            font-style: bold;
+        }
+
+        .accepted {
+            background-color: #5eba7d;
+            color: white;
+        }
     }
 }
 

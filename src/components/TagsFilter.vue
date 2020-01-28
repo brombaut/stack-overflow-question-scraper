@@ -61,14 +61,16 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 
 .action {
     display: flex;
     align-items: center;
     border-left: 1px solid white;
     position: relative;
+}
 
+#tag-filter-container {
     .tag-container {
         height: 100%;
         display: flex;
