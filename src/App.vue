@@ -116,6 +116,7 @@ export default {
             this.fetchData();
         },
         updateFilterTags(newTags) {
+            this.handleUpdateTempTags(newTags);
             this.filterTags = newTags;
             this.fetchData();
         },
