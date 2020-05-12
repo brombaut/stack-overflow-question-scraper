@@ -188,6 +188,11 @@ header {
     h3 {
         margin: 8px 0px;
     }
+    @media only screen and (max-width: 1000px) {
+        h3 {
+            display: none;
+        }
+    }
 
     .expand{
         flex: 1;

@@ -1,5 +1,13 @@
 <template>
   <div id="app">
+    <div
+        v-show="screenIsTooSmall"
+        id="mobile-coming-soon">
+        Mobile version not available
+    </div>
+    <div
+        id="desktop-wrapper"
+        v-show="!screenIsTooSmall">
         <MainHeader
             :isRefreshing="isRefreshing"
             :filterType="filterTypes[filterType]"
@@ -10,7 +18,8 @@
             @changeFilterType="handleFilterTypeChange"
             @changeFilterDateRange="handleFilterDateRangeChange"
             @changeFilterPageSize="handleFilterPageSizeChange"
-            @updateTempTags="handleUpdateTempTags" />
+            @updateTempTags="handleUpdateTempTags"
+        />
         <main>
             <section>
                 <h2>{{ filterTypes[filterType] }} Questions</h2>
@@ -20,7 +29,8 @@
                     :rows="questionSummaries"
                     :filterTags="filterTags"
                     @tagClicked="updateFilterTags"
-                    @rowClicked="handleQuestionSelected"/>
+                    @rowClicked="handleQuestionSelected"
+                />
                 <h3 v-else>No Data Found</h3>
             </section>
         </main>
@@ -30,7 +40,9 @@
             :questionBodyDetails="selectedQuestionBodyDetails"
             :filterTags="filterTags"
             @modalClosed="resetSelectedQuestion"
-            @tagClicked="updateFilterTags" />
+            @tagClicked="updateFilterTags"
+        />
+    </div>
   </div>
 </template>
 
@@ -50,6 +62,7 @@ export default {
     },
     data() {
         return {
+            screenIsTooSmall: false,
             questionSummaries: [],
             specificQuestionDetails: {},
             isRefreshing: false,
@@ -149,28 +162,42 @@ export default {
         useTempTags() {
             this.filterTags = [...this.tempTags];
         },
+        handleWindowResize() {
+            this.screenIsTooSmall = window.innerWidth < 880;
+        },
     },
     mounted() {
         this.fetchData();
+        this.handleWindowResize();
+        window.addEventListener('resize', this.handleWindowResize);
     },
 };
 </script>
 
 <style lang="scss">
 #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+
+  #mobile-coming-soon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 3rem;
+    height: 100%;
+  }
+
+  main {
+    margin: 80px 8px;
     display: flex;
     flex-direction: column;
-
-    main {
-        margin: 80px 8px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+    align-items: center;
+  }
 }
 </style>
